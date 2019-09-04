@@ -1,3 +1,6 @@
+#ifndef DADOS_FIS
+#define DADOS_FIS
+
 #include <TCanvas.h>
 #include <TH1I.h>
 #include "TH1D.h"
@@ -5,46 +8,55 @@
 #include "TTree.h"
 #include "TGraph.h"
 
-void Primtre(){
+void Primtre(){ // Rotina que cria a tree com os histogramas de idade, massa e altura.
         
-    TFile *dados = new TFile("Q1.root","RECREATE");
-    TTree *tree = new TTree("mree","data from csv file");
+    TFile *dados = new TFile("Q1.root","RECREATE"); // Cria o arquivo Q1.root.
+    TTree *tree = new TTree("mree","data from csv file"); // Cria a tree para armazenar os dados do arquivo DadosFisGeral2001_2.csv.
     
-    tree->ReadFile("DadosFisGeral2001_2.csv","idade/I,massa/D,altura/D",',');
+    // Usa o método ReadFile da TTree para ler os dados idade (inteiro), massa (double) e altura (double).
+    tree->ReadFile("DadosFisGeral2001_2.csv","idade/I,massa/D,altura/D",','); 
         
+    // Variáveis para criar o histograma.    
     int idade;   
     double massa, altura;
 
+    // Histogramas de idade, altura e massa
     TH1I *h_idade = new TH1I("idade", "Histograma de idade", 25,15.,40.);
     TH1D *h_altura = new TH1D("altura", "Histograma de altura", 17,158.,192.);
     TH1D *h_massa = new TH1D("massa", "Histograma de massa", 20,50.,130.);
     
+    // Associa aos ramos idade, altura e massa as respectivas variáveis.
     tree->SetBranchAddress("idade", &idade);
     tree->SetBranchAddress("altura", &altura);
     tree->SetBranchAddress("massa", &massa);
     
-   
-    auto n = tree->GetEntries();
+    auto n = tree->GetEntries(); // Número de entradas da tree.
     
+    // For que preenche os histogramas a partir dos dados da tree.
     for (auto i = 0; i != n; ++i){
-        tree->GetEntry(i);
+        tree->GetEntry(i); // Acessa a memória i da tree
         h_idade->Fill(idade);
         h_altura->Fill(altura);
         h_massa->Fill(massa);
     }
-    TCanvas *c_massa = new TCanvas("massa","Massa",400,500);
-    TCanvas *c_idade = new TCanvas("idade","idade",400,500);
-    TCanvas *c_altura = new TCanvas("altura","altura",400,500);
 
+    // Criação dos canvas para os histogramas
+    TCanvas *c_massa = new TCanvas("massa","Massa",400,500);
+    TCanvas *c_idade = new TCanvas("idade","Idade",400,500);
+    TCanvas *c_altura = new TCanvas("altura","Altura",400,500);
+
+    // Desenha o histograma de idade.
     c_idade->cd();
     h_idade->Draw();
-        
+
+    //Desenha o histograma de altura.    
     c_altura->cd();
     h_altura->Draw();
     
+    //Desenha o histograma de massa.   
     c_massa->cd();
     h_massa->Draw();
-    //c_massa->update();
+    
 }
 
 //Função que plota os diagramas de dispersão.
@@ -53,22 +65,23 @@ void dispersao(){
     int idade;
     double massa, altura;
 
-    TFile *dados = new TFile("Q1.root"); //Carrega o file;
-    TTree *tree = new TTree("mree","data from csv file"); //Pega a tree que está dentro do file;
+    TFile *dados = new TFile("Q1.root"); // Carrega o file;
+    TTree *tree = new TTree("mree","data from csv file"); // Pega a tree que está dentro do file;
 
-    tree->ReadFile("DadosFisGeral2001_2.csv","idade/I,massa/D,altura/D",',');
+    tree->ReadFile("DadosFisGeral2001_2.csv","idade/I,massa/D,altura/D",','); // Carrega os dados para gerar o gráfico.
     
+    // Associa os ramos da ttree a cada variável da rotina.
     tree->SetBranchAddress("massa", &massa);
     tree->SetBranchAddress("idade", &idade);
     tree->SetBranchAddress("altura", &altura); 
 
-    int n = tree->GetEntries();
+    int n = tree->GetEntries(); // PEega o tamanho da tree.
 
-    int id[n]; //Array para guardar as idades.
-    int ma[n], al[n]; //Array para guardar as massas e as idades.
+    // Arrays para guarda as idades, massas e alturas.
+    int id[n]; 
+    int ma[n], al[n]; 
 
-    //rotina para prencher os arrays
-
+    // Rotina para prencher os arrays
     for (auto i = 0; i != n; i++){
         tree->GetEntry(i);
         id[i] = idade;
@@ -98,7 +111,7 @@ void dispersao(){
     // Deixand o gráfico mais agradável.
     grafico2->SetTitle("Massa x idade");
     grafico2->GetXaxis()->SetTitle("idade (anos)");
-    grafico2->GetYaxis()->SetTitle("Massa (kg)");
+    grafico2->GetYaxis()->SetTitle("massa (kg)");
     grafico2->SetMarkerStyle(20);
     grafico2->SetMarkerSize(0.9);
     grafico2->SetMarkerColor(1);
@@ -108,8 +121,8 @@ void dispersao(){
 
     // Deixand o gráfico mais agradável.
     grafico3->SetTitle("Altura x massa");
-    grafico3->GetXaxis()->SetTitle("Massa (anos)");
-    grafico3->GetYaxis()->SetTitle("Altura (kg)");
+    grafico3->GetXaxis()->SetTitle("massa (kg)");
+    grafico3->GetYaxis()->SetTitle("altura (cm)");
     grafico3->SetMarkerStyle(20);
     grafico3->SetMarkerSize(0.9);
     grafico3->SetMarkerColor(1);
@@ -127,3 +140,4 @@ void dispersao(){
     grafico3->Draw("AP"); 
 }
 
+#endif

@@ -12,6 +12,7 @@
 #include <TSystem.h>
 #include <fstream>
 #include "Dadosfisg.h"
+#include <TTree.h>
 
 // Classe para a formação da janela.
 class MyMainFrame {
@@ -27,7 +28,6 @@ public:
    void Histogramas();
    void Dispersao_pa();
    void Dispersao_moeda();
-   
 };
 
 MyMainFrame::MyMainFrame(const TGWindow *p,UInt_t w,UInt_t h) {
