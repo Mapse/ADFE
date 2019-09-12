@@ -26,3 +26,27 @@ void crystb(){
     cr->SetParameters(1, 0, 1, 2, 5); 
     cr->Draw();
 }
+
+int main(){
+    //Criando o histograma para preenchimento.
+    TH1F *h1 = new TH1F("hshow", "h1;mass (GeV);counts",60,0,8);
+    const int N = 16;
+    // Inserindo dados para formar uma distribuição gausiana.
+    int v[N] = {1, 2, 2, 3, 3, 3, 4, 4, 4, 4, 5, 5, 5, 6, 6, 7};
+    for (int i = 0; i!=N; ++i){ // For para preencher o histograma
+        h1->Fill(v[i]);
+    }
+    // Definição da função gausiana para fitar os dados do histograma
+    TF1 * ga = new TF1("f1", "[0]*TMath::Gaus(x, [1], [2])", 0, 8);
+    ga->SetParameter(0,1);
+    ga->SetParameter(1,4.2);
+    ga->SetParameter(2, 1.2);
+
+   // h1->Fit(ga);
+    TF1 *fitfun = h1->GetFunction("hshow");
+    //fitfun->GetParameter(2);
+    //h1->Draw();
+    TFitResultPtr r = h1->Fit(ga,"S");
+    
+    
+}
