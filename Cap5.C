@@ -70,12 +70,20 @@ void prob5(){
     const unsigned n = 5;
     double d[n] = {4.9, 6.7, 7.3, 8.1, 9.2};
     double e[n] = {0.07, 0.18, 0.30, 0.45, 0.69};
-
+    double mede, medd, sige, sigd;
+    
     for (unsigned i = 0; i!=n; i++){
         d[i] = log(d[i]);
         e[i] = log(e[i]);
+        mede+= e[i]/n;
+        medd+= d[i]/n;
     }
-
+    
+    for (unsigned i = 0; i!=n; i++){
+        sige+= pow((e[i]-mede),2)/(n-1);
+        sigd+= pow((d[i]-medd),2)/(n-1);
+        
+    }
     TGraph *g = new TGraph(n, e, d);
      
     g->Draw("AP");
