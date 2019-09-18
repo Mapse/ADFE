@@ -69,7 +69,7 @@ void ex16(){
 
     int n = tree->GetEntries();
 
-    for (int i = 0; i!=n; i++){
+    for (unsigned i = 0; i!=n; i++){
         tree->GetEntry(i);
         if (q1*q2 == -1)  h1->Fill(massa);
        
@@ -83,7 +83,7 @@ void ex16(){
     ga->SetParameter(0,44.3499) ;
     ga->SetParameter(1,2.96950);
     ga->SetParameter(2,0.256882);
-     
+         
     TF1 *sum = new TF1("sum", "[0]*TMath::Gaus(x,[1],[2]) + [3]*TMath::Exp([4]*x)",2.,5.);
     sum->SetParameters(44.3499, 2.96950, 0.256882, 580, -1.01172);
     //TF1 *sum = new TF1("sum", "ga+exp1",2.,5.);
@@ -95,12 +95,12 @@ void ex16(){
     double sig = fit->Parameter(2);
     mtx.Print();   
     file->Write();
-
+    const double *p = fit->GetErrors();
     double ne = ga->Integral(2.,5.);
     //Double_t interr = ga->IntegralError(2.,5.,fit->GetParams(), fit->GetCovarianceMatrix()->GetMatrixArray());
 
-    cout << "O número de pico de eventos é " << ne << endl;
-    
+    cout << "O número de pico de eventos é: " << ne << endl;
+    cout << "O erro é: " << fit->GetErrors() << endl;
     //file->Close();
     
 }
