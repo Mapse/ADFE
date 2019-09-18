@@ -84,6 +84,9 @@ void prob5(){
         sigd+= pow((d[i]-medd),2)/(n-1);
         
     }
+    
+    cout << "média da energia: " << mede << "desvio da energia: " << sige;
+    cout << "média da depressão: " << mede << "desvio da depressão: " << sige;
     TGraph *g = new TGraph(n, e, d);
      
     g->Draw("AP");
