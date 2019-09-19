@@ -12,9 +12,11 @@ using namespace std;
 
 void prob2(){
     
+    // Cria o arquivo e a trre
     TFile *file = new TFile("pendulo.root", "RECREATE");
     TTree *tree = new TTree("tree", "tree");
 
+    // Lê os dados do arquivo .dat.
     tree->ReadFile("pendulo.dat","T/D", ',');
     int n = tree->GetEntries();
 
@@ -22,11 +24,13 @@ void prob2(){
     tree->SetBranchAddress("T",&T);
     double media, err, errmedia, errerr = 0;
 
+    // Cálculo da média.
     for (unsigned i = 0; i != n; ++i){
         tree->GetEntry(i);
         media += T/n;
     }
 
+    // Cálculo do erro.
     for (unsigned i = 0; i != n; ++i){
         tree->GetEntry(i);
         err += pow((T-media),2)/(n-1);
@@ -44,15 +48,18 @@ void prob2(){
 
 void prob3(){
     
+    // Dados do problema.
     const unsigned n = 6;
     double ddp[n] = {1.44, 1.48, 1.42, 1.44, 1.50, 1.46};
     
     double media, err, errmedia, errerr = 0;
 
+    // Cálculo da média.
     for (unsigned i = 0; i != n; ++i){
         media += ddp[i]/n;
     }
 
+    // Cálculo do erro.
     for (unsigned i = 0; i != n; ++i){
         err += pow((ddp[i]-media),2)/(n-1);
     }
