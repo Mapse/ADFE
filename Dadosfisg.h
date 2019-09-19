@@ -61,7 +61,7 @@ void Primtre(){ // Rotina que cria a tree com os histogramas de idade, massa e a
 
 //Função que plota os diagramas de dispersão.
 void dispersao(){
-    
+    grafico1->SetMarkerStyle(20);
     int idade;
     double massa, altura;
 
@@ -101,7 +101,7 @@ void dispersao(){
     grafico1->SetTitle("Altura x idade");
     grafico1->GetXaxis()->SetTitle("idade (anos)");
     grafico1->GetYaxis()->SetTitle("altura (cm)");
-    grafico1->SetMarkerStyle(20);
+    
     grafico1->SetMarkerSize(0.9);
     grafico1->SetMarkerColor(1);
 
