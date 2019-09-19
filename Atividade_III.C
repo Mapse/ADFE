@@ -90,6 +90,7 @@ void ex16(){
 
     TFitResultPtr fit = h1->Fit(sum,"S M");  
     TMatrixDSym mtx = fit->GetCorrelationMatrix();
+    TMatrixDSym cov = fit->GetCovarianceMatrix();
     double xi2 = fit->Chi2();
     double med = fit->Parameter(1);
     double sig = fit->Parameter(2);
@@ -97,10 +98,12 @@ void ex16(){
     file->Write();
     const double *p = fit->GetErrors();
     double ne = ga->Integral(2.,5.);
-    //Double_t interr = ga->IntegralError(2.,5.,fit->GetParams(), fit->GetCovarianceMatrix()->GetMatrixArray());
+    TMatrixDSym covPeak = cov.GetSub(0,2,0,2); 
+    
+    double err = ga->IntegralError(2.,5.,covPeak.GetMatrixArray())/h1->GetBinWidth(1);
 
     cout << "O número de pico de eventos é: " << ne << endl;
-    cout << "O erro é: " << fit->GetErrors() << endl;
+    cout << "O erro é: " << err << endl;
     //file->Close();
     
 }
