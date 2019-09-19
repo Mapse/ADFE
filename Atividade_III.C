@@ -52,9 +52,11 @@ void ex15(){
 
 void ex16(){
     
+    // Criação do arquivo e da  ttree.
     TFile *file = new TFile("DimuonM.root", "RECREATE");
     TTree *tree = new TTree("tremu", "Dados do dimuon_2-5 GeV.csv");
 
+    // Leitura dos dados do dimuon.
     tree->ReadFile("dimuon_2-5GeV2.csv","Massa/D,Q1/I,Q2/I",',');
 
     // Criação do histograma
@@ -69,12 +71,14 @@ void ex16(){
 
     int n = tree->GetEntries();
 
+    // Lógica para utilizarmos somente múons de carga oposta.
     for (unsigned i = 0; i!=n; i++){
         tree->GetEntry(i);
         if (q1*q2 == -1)  h1->Fill(massa);
        
     }
 
+    // Definição das funções individuais para o processo de fitagem.
     TF1 *exp1 = new TF1("exp1", "expo",2., 5);
     exp1->SetParameter(0, 580);
     exp1->SetParameter(1,  -1.01172e+00);
@@ -83,21 +87,32 @@ void ex16(){
     ga->SetParameter(0,44.3499) ;
     ga->SetParameter(1,2.96950);
     ga->SetParameter(2,0.256882);
-         
+
+    // Função total que fita os dados do histograma.     
     TF1 *sum = new TF1("sum", "[0]*TMath::Gaus(x,[1],[2]) + [3]*TMath::Exp([4]*x)",2.,5.);
     sum->SetParameters(44.3499, 2.96950, 0.256882, 580, -1.01172);
-    //TF1 *sum = new TF1("sum", "ga+exp1",2.,5.);
-
-    TFitResultPtr fit = h1->Fit(sum,"S M");  
+    
+    // Objeto que guarda o resultado do fit.
+    TFitResultPtr fit = h1->Fit(sum,"S M");
+    // Objeto que pega a matriz de correlação das parâmetos estimados no fit.  
     TMatrixDSym mtx = fit->GetCorrelationMatrix();
+    // Objeto que pega a matriz de covariância.
     TMatrixDSym cov = fit->GetCovarianceMatrix();
+
+    // Pega o valor do xi2, a média e o desvio padrão.
     double xi2 = fit->Chi2();
     double med = fit->Parameter(1);
     double sig = fit->Parameter(2);
+
+    // Printa a matriz de correlação dos parâmetros.
     mtx.Print();   
+
     file->Write();
-    const double *p = fit->GetErrors();
+
+    // Calcula a integral da gaussiana para a determinação do número de eventos no pico.
     double ne = ga->Integral(2.,5.);
+
+    // Pega a submatriz.
     TMatrixDSym covPeak = cov.GetSub(0,2,0,2); 
     
     double err = ga->IntegralError(2.,5.,covPeak.GetMatrixArray())/h1->GetBinWidth(1);
