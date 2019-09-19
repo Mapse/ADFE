@@ -67,12 +67,17 @@ void prob3(){
 }
 
 void prob5(){
+
     const unsigned n = 5;
+    // Valores de depressão e de energia.
     double d[n] = {4.9, 6.7, 7.3, 8.1, 9.2};
     double e[n] = {0.07, 0.18, 0.30, 0.45, 0.69};
+    // Erro propagado para o logaritmo da depressão. *Ver o cálculo no relatório.
     double errin[n] = {0.061, 0.045, 0.055, 0.049, 0.043};
-    double mede, medd, sige, sigd, cov;
+    // Variáveis: média da energia e da depressão, desvio da energia e da depressão e covariância.
+    double mede, medd, sige, sigd, cov = 0;
     
+    // Cálculo das médias da energia e da depressão.
     for (unsigned i = 0; i!=n; i++){
         d[i] = log(d[i]);
         e[i] = log(e[i]);
@@ -80,36 +85,47 @@ void prob5(){
         medd+= d[i]/n;
     }
     
+    // Cálculo da desvio da energia, da depressão e da covariância.
     for (unsigned i = 0; i!=n; i++){
         sige+= pow((e[i]-mede),2)/n;
         sigd+= pow((d[i]-medd),2)/n;
-        cov+= (e[i]-mede)*(d[i]-medd)/n;
-        
+        cov+= (e[i]-mede)*(d[i]-medd)/n;        
     }
     sige = sqrt(sige);
     
+    // Cálculo dos parâmetros da reta de ajuste.
     double a,b = 0;
     a = cov/pow(sige,2);
     b = medd - a* mede; 
-    double ey=0;
-    
+
+    // Cálculo dos desvios combinados.
+    double sigmas = 0;  
     for (unsigned i = 0; i!=n; i++){
-        ey += pow((d[i]-(a*e[i]+b)),2)/(n-2);
+        sigmas+= 1/pow(errin[i],2);
         
     }
-    ey += sqrt(ey);
+    sigmas = 1/pow(sigmas,0.5);
 
-    double siga = ey/(sige*sqrt(n));
-    
-    double sigmas;   
+    // Cálculo do desvio do parâmetro a.
+    double siga = 0;
+    siga = sigmas/sige;
+
+    // Cálculo da média quadrática da energia.
+    double equadmed = 0;
     for (unsigned i = 0; i!=n; i++){
-        sigmas+= 1/errin[i];
-        
+        equadmed += (pow(e[i],2))/n;        
     }
 
-    cout << a << endl;
+    // Cálculo do desvio do parâmetro b.
+    double sigb = 0;
+    sigb = siga*sqrt(equadmed);
+
+    cout << "a: " << a << " sigma a: " << siga << "\n" << endl;
+    cout << "b: " << b << " sigma b: " << sigb << endl;
+
+    // Gráfico da função.
     TGraph *g = new TGraph(n, e, d);
-     
+    g->SetMarkerStyle(21);
     g->Draw("AP");
     
 }
