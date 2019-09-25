@@ -144,7 +144,7 @@ void ex20(){
 
     // Fita os dados com a função somada.
     RooFitResult *res = modelo->fitTo(data);
-
+        
     // Pega o frame.
     RooPlot *p = x->frame();
     // Insere os dados no frame.
