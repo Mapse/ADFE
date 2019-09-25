@@ -1,0 +1,22 @@
+{
+//========= Macro generated from object: graf/Func#tilde{a}o de verossimilhanca
+//========= by ROOT version6.19/01
+   
+   TF1 *graf2 = new TF1("graf","Func#tilde{a}o de verossimilhanca",0,10, TF1::EAddToList::kDefault);
+   graf2->SetFillColor(19);
+   graf2->SetFillStyle(0);
+   graf2->SetLineColor(2);
+   graf2->SetLineWidth(2);
+   graf2->GetXaxis()->SetTitle("x (qt de bolas azuis na caixa)");
+   graf2->GetXaxis()->SetLabelFont(42);
+   graf2->GetXaxis()->SetLabelSize(0.035);
+   graf2->GetXaxis()->SetTitleSize(0.035);
+   graf2->GetXaxis()->SetTitleOffset(1);
+   graf2->GetXaxis()->SetTitleFont(42);
+   graf2->GetYaxis()->SetTitle("L");
+   graf2->GetYaxis()->SetLabelFont(42);
+   graf2->GetYaxis()->SetLabelSize(0.035);
+   graf2->GetYaxis()->SetTitleSize(0.035);
+   graf2->GetYaxis()->SetTitleFont(42);
+   graf2->Draw("");
+}

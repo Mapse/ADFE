@@ -18,7 +18,7 @@ class MyMainFrame {
    RQ_OBJECT("MyMainFrame")
 private:
    TGMainFrame         *fMain;
-   TRootEmbeddedCanvas *fEcanvas;
+   //TRootEmbeddedCanvas *fEcanvas;
    TString save_name;
 public:
    MyMainFrame(const TGWindow *p,UInt_t w,UInt_t h);
@@ -34,9 +34,9 @@ MyMainFrame::MyMainFrame(const TGWindow *p,UInt_t w,UInt_t h) {
    fMain = new TGMainFrame(p,w,h);
 
    // Create canvas widget
-   fEcanvas = new TRootEmbeddedCanvas("Ecanvas",fMain,4,4);
-   fMain->AddFrame(fEcanvas, new TGLayoutHints(kLHintsExpandX |
-                   kLHintsExpandY, 10,10,10,1));
+   //fEcanvas = new TRootEmbeddedCanvas("Ecanvas",fMain,4,4);
+   //fMain->AddFrame(fEcanvas, new TGLayoutHints(kLHintsExpandX |
+     //              kLHintsExpandY, 10,10,10,1));
    // Create a horizontal frame widget with buttons
    TGHorizontalFrame *hframe = new TGHorizontalFrame(fMain,300,40);
    TGTextButton *draw = new TGTextButton(hframe,"Histogramas");
@@ -75,39 +75,39 @@ MyMainFrame::MyMainFrame(const TGWindow *p,UInt_t w,UInt_t h) {
 //Desenha os histogramas de idade, massa e altura.
 void MyMainFrame::DoDraw() {
    // Draws function graphics in randomly chosen interval
-   TCanvas *fCanvas = fEcanvas->GetCanvas();
-   fCanvas->Clear();
-   fCanvas->Divide(2,2);
+   //TCanvas *fCanvas = fEcanvas->GetCanvas();
+   //fCanvas->Clear();
+   //fCanvas->Divide(2,2);
    save_name = "Histogramas.jpeg";
    Primtre();
-   fCanvas->cd();
-   fCanvas->Update();
+   //fCanvas->cd();
+   //fCanvas->Update();
 }
 
 //Desenha os diagramas de dispersão.
 void MyMainFrame::DoDraw2() {
    // Draws function graphics in randomly chosen interval
-   TCanvas *fCanvas = fEcanvas->GetCanvas();
-   fCanvas->Clear();
+   /* TCanvas *fCanvas = fEcanvas->GetCanvas();
+   fCanvas->Clear(); */
    save_name = "Diagrama de dispersão.jpeg";
    //Descomentar linha abaixo para gerar uma distribuição nova de moedas.
    //retorna();
    dispersao();
-   fCanvas->cd();
-   fCanvas->Update();
+   /* fCanvas->cd();
+   fCanvas->Update(); */
 }
 
 //Desenha o diagrama de dispersão da moeda
 void MyMainFrame::DoDraw3() {
    // Draws function graphics in randomly chosen interval
-   TCanvas *fCanvas = fEcanvas->GetCanvas();
-   fCanvas->Clear();
+   /* TCanvas *fCanvas = fEcanvas->GetCanvas();
+   fCanvas->Clear(); */
    save_name = "Diagrama de dispersão - moeda.jpeg";
    //Descomentar linha abaixo para gerar uma distribuição nova de moedas.
    //retorna();
    grafdisp();
-   fCanvas->cd();
-   fCanvas->Update();
+   /* fCanvas->cd();
+   fCanvas->Update(); */
 }
 
 /* void MyMainFrame::Save() {
